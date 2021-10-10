@@ -39,6 +39,7 @@ void hello() {
 }
 
 void init() {
+    tty_set(0);
     set_cursor_pos(-1);
     disable_input();
     tty_out((char*)"Initializing Interrupt Descriptor Table...");
@@ -74,10 +75,24 @@ void init() {
 
 extern "C" void main(){
     init();
-    clear();
-    print_str(icon);
-    next_line();
+    tty_set(1);
+    tty_out((char*)"Hi this is tty1\n");
+    print_raw(tty_buffer);
     sleep(1);
-    enable_input();
+    tty_set(1);
+    tty_out((char*)"Hi this is tty2\n");
+    print_raw(tty_buffer);
+    sleep(1);
+    tty_set(1);
+    tty_out((char*)"Hi this is tty3\n");
+    print_raw(tty_buffer);
+    sleep(1);
+    tty_set(1);
+    tty_out((char*)"Hi this is tty4\n");
+    print_raw(tty_buffer);
+    sleep(1);
+    tty_set(0);
+    print_raw(tty_buffer);
+    // enable_input();
     return;
 }

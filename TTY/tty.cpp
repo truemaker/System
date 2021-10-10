@@ -1,5 +1,37 @@
 int tty_pos = 0;
-uint16 tty_buffer[2200];
+uint16* tty_buffer;
+
+uint16 tty0[2200];
+uint16 tty1[2200];
+uint16 tty2[2200];
+uint16 tty3[2200];
+uint16 tty4[2200];
+uint16 tty5[2200];
+uint16 tty6[2200];
+uint16 tty7[2200];
+
+int tty0_pos = 0;
+int tty1_pos = 0;
+int tty2_pos = 0;
+int tty3_pos = 0;
+int tty4_pos = 0;
+int tty5_pos = 0;
+int tty6_pos = 0;
+int tty7_pos = 0;
+
+void tty_set(uint8 ttyIdx) {
+    switch (ttyIdx) {
+        case 0: tty_buffer = tty0; tty_pos = tty0_pos; break;
+        case 1: tty_buffer = tty1; tty_pos = tty1_pos; break;
+        case 2: tty_buffer = tty2; tty_pos = tty2_pos; break;
+        case 3: tty_buffer = tty3; tty_pos = tty3_pos; break;
+        case 4: tty_buffer = tty4; tty_pos = tty4_pos; break;
+        case 5: tty_buffer = tty5; tty_pos = tty5_pos; break;
+        case 6: tty_buffer = tty6; tty_pos = tty6_pos; break;
+        case 7: tty_buffer = tty7; tty_pos = tty7_pos; break;
+        default: print_str("Error: invalid ttyIdx\n");
+    }
+}
 
 void tty_set_pos(int pos) {
     tty_pos = pos;
