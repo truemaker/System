@@ -1,6 +1,7 @@
 int tty_pos = 0;
 uint16* tty_buffer;
 
+/*
 uint16 tty0[2200];
 uint16 tty1[2200];
 uint16 tty2[2200];
@@ -9,6 +10,27 @@ uint16 tty4[2200];
 uint16 tty5[2200];
 uint16 tty6[2200];
 uint16 tty7[2200];
+*/
+
+uint16* tty0;
+uint16* tty1;
+uint16* tty2;
+uint16* tty5;
+uint16* tty3;
+uint16* tty4;
+uint16* tty6;
+uint16* tty7;
+
+void setup_tty() {
+    tty0 = (uint16*)kmalloc(2200 * 2);
+    tty1 = (uint16*)kmalloc(2200 * 2);
+    tty2 = (uint16*)kmalloc(2200 * 2);
+    tty3 = (uint16*)kmalloc(2200 * 2);
+    tty4 = (uint16*)kmalloc(2200 * 2);
+    tty5 = (uint16*)kmalloc(2200 * 2);
+    tty6 = (uint16*)kmalloc(2200 * 2);
+    tty7 = (uint16*)kmalloc(2200 * 2);
+}
 
 int tty0_pos = 0;
 int tty1_pos = 0;

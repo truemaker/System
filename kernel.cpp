@@ -39,6 +39,7 @@ void hello() {
 }
 
 void init() {
+    setup_tty();
     tty_set(0);
     set_cursor_pos(-1);
     disable_input();
@@ -79,20 +80,31 @@ extern "C" void main(){
     tty_out((char*)"Hi this is tty1\n");
     print_raw(tty_buffer);
     sleep(1);
-    tty_set(1);
+    tty_set(2);
     tty_out((char*)"Hi this is tty2\n");
     print_raw(tty_buffer);
     sleep(1);
-    tty_set(1);
+    tty_set(3);
     tty_out((char*)"Hi this is tty3\n");
     print_raw(tty_buffer);
     sleep(1);
-    tty_set(1);
+    tty_set(4);
     tty_out((char*)"Hi this is tty4\n");
+    print_raw(tty_buffer);
+    sleep(1);
+    tty_set(5);
+    tty_out((char*)"Hi this is tty5\n");
+    print_raw(tty_buffer);
+    sleep(1);
+    tty_set(6);
+    tty_out((char*)"Hi this is tty6\n");
+    print_raw(tty_buffer);
+    sleep(1);
+    tty_set(7);
+    tty_out((char*)"Hi this is tty7\n");
     print_raw(tty_buffer);
     sleep(1);
     tty_set(0);
     print_raw(tty_buffer);
-    // enable_input();
     return;
 }
