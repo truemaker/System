@@ -64,9 +64,30 @@ void tty_char(uint8 c) {
     // print_char(c);
 }
 
+void tty_color_char(uint8 c, uint8 color, uint8 bg) {
+    if (c == '\n') {
+        tty_next_line();
+    } else if (c == '\t') {
+        tty_set_pos(*tty_pos + 4);
+    } else if (c == '\b') {
+        tty_buffer[*tty_pos - 1] = vga_entry(0, color, bg);
+        tty_set_pos(*tty_pos - 1);
+    } else {
+        tty_buffer[*tty_pos] = vga_entry(c, color, bg);
+        tty_set_pos(*tty_pos + 1);
+    }
+    // print_char(c);
+}
+
 void tty_out(char* str) {
     for (int i = 0; i < strlen((char*)str); i++) {
         tty_char(str[i]);
+    }
+}
+
+void tty_color_out(char* str, uint8 color, uint8 bg) {
+    for (int i = 0; i < strlen((char*)str); i++) {
+        tty_color_char(str[i], color, bg);
     }
 }
 
@@ -76,6 +97,20 @@ void tty_show_tty_num(uint8 num) {
     tty_out("Switched to TTY");
     tty_out(num_to_char(num));
     tty_out("\n");
+}
+
+void tty_clear() {
+    *tty_pos = 0;
+    for (int i = 0; i < 2200; i++) {
+        tty_buffer[i] = vga_entry(0,0x0f,0x00);
+    }
+}
+
+void tty_clear_color(uint8 color) {
+    *tty_pos = 0;
+    for (int i = 0; i < 2200; i++) {
+        tty_buffer[i] = vga_entry(0,0x0f,color);
+    }
 }
 
 void tty_set(uint8 ttyIdx) {

@@ -41,33 +41,34 @@ void hello() {
 void init() {
     setup_tty();
     tty_set(0);
+    tty_clear();
     set_cursor_pos(-1);
     disable_input();
     tty_out((char*)"Initializing Interrupt Descriptor Table...");
     print_raw(tty_buffer);
     idt_install();
-    tty_out((char*)"OK\n");
+    tty_color_out((char*)"OK\n", 0x0A, 0x00);
     tty_out((char*)"Initializing Interrupt Service(s)...");
     print_raw(tty_buffer);
 	isrs_install();
-    tty_out((char*)"OK\n");
+    tty_color_out((char*)"OK\n", 0x0A, 0x00);
     tty_out((char*)"Initializing Interrupt Request Handler(s)...");
     print_raw(tty_buffer);
     irq_install();
-    tty_out((char*)"OK\n");
+    tty_color_out((char*)"OK\n", 0x0A, 0x00);
     tty_out((char*)"Initializing Dynamic Memory...");
     print_raw(tty_buffer);
     initializeMem();
-    tty_out((char*)"OK\n");
+    tty_color_out((char*)"OK\n", 0x0A, 0x00);
     asm volatile("sti");
     tty_out((char*)"Installing Interrupt Request Handler for Timer...");
     print_raw(tty_buffer);
     timer_install();
-    tty_out((char*)"OK\n");
+    tty_color_out((char*)"OK\n", 0x0A, 0x00);
     tty_out((char*)"Installing Interrupt Request Handler for Keyboard...");
     print_raw(tty_buffer);
     kb_install();
-    tty_out((char*)"OK\n");
+    tty_color_out((char*)"OK\n", 0x0A, 0x00);
     print_raw(tty_buffer);
     sleep(1);
     enable_input();
@@ -77,7 +78,8 @@ void init() {
 extern "C" void main(){
     init();
     tty_set(1);
-    tty_out((char*)"Hi this is tty1\n");
+    tty_clear_color(0x08);
+    tty_color_out((char*)"Hi this is tty1 with a grey background\n", 0x0F, 0x08);
     print_raw(tty_buffer);
     sleep(1);
     tty_set(2);
@@ -106,5 +108,7 @@ extern "C" void main(){
     sleep(1);
     tty_set(0);
     print_raw(tty_buffer);
+    clear();
+    print_colored_str((char*)"Im Green in the front and red in the back", 0x0A, 0x0C);
     return;
 }

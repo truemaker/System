@@ -65,6 +65,20 @@ void print_char(uint8 c) {
     }
 }
 
+void print_colored_char(uint8 c, uint8 color, uint8 bg) {
+    if (c == '\n') {
+        next_line();
+    } else if (c == '\t') {
+        set_cursor_pos(cursor_pos + 4);
+    } else if (c == '\b') {
+        buffer[cursor_pos - 1] = vga_entry(0, color, bg);
+        set_cursor_pos(cursor_pos - 1);
+    } else {
+        buffer[cursor_pos] = vga_entry(c, color, bg);
+        set_cursor_pos(cursor_pos + 1);
+    }
+}
+
 void input_char(uint8 c, bool caps) {
     if (caps) {
         if (0 < (c - 96)) {
@@ -83,10 +97,23 @@ void print_str(const char* str) {
     }
 }
 
+void print_colored_str(const char* str, uint8 color, uint8 bg) {
+    for (int i = 0; i < strlen((char*)str); i++) {
+        print_colored_char(str[i], color, bg);
+    }
+}
+
 void clear() {
     cursor_pos = 0;
     for (int i = 0; i < 2200; i++) {
         buffer[i] = vga_entry(0,fg_color,bg_color);
+    }
+}
+
+void clear_color(uint8 color) {
+    cursor_pos = 0;
+    for (int i = 0; i < 2200; i++) {
+        buffer[i] = vga_entry(0,fg_color,color);
     }
 }
 
