@@ -43,6 +43,7 @@ void hello() {
 }
 
 void init() {
+    setup_devices();
     setup_tty();
     tty_set(0);
     tty_clear();
@@ -132,12 +133,10 @@ extern "C" void main(){
     buf2[1] = 'y';
     buf2[2] = 'e';
     tfs_write_file(*fd2, buf2);
-    // tfs_write_file(*fd,buf);
     next_line();
     print_str(fd2->name);
     next_line();
     print_str(tfs_read_file(*fd2));
-    File_Descriptor* devnull = tfs_mkdevice((uint8*)"/dev/null", 0);
     print_str(tfs_read_file(*devnull));
     return;
 }
