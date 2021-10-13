@@ -91,7 +91,7 @@ void input_char(uint8 c, bool caps) {
     }
 }
 
-void print_str(const char* str) {
+void print_str(uint8* str) {
     for (int i = 0; i < strlen((char*)str); i++) {
         print_char(str[i]);
     }

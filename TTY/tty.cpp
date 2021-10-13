@@ -126,7 +126,7 @@ void tty_set(uint8 ttyIdx) {
         case 5: tty_buffer = tty5; tty_pos = &tty5_pos; break;
         case 6: tty_buffer = tty6; tty_pos = &tty6_pos; break;
         case 7: tty_buffer = tty7; tty_pos = &tty7_pos; break;
-        default: print_str("Error: invalid ttyIdx\n");
+        default: print_str((uint8*)"Error: invalid ttyIdx\n");
     }
 }
 

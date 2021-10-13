@@ -122,8 +122,8 @@ extern "C" void _fault_handler(struct regs *r)
     if (r->int_no < 32)
     {
         clear();
-        print_str((char*)exception_messages[r->int_no]);
-        print_str(" Exception.\nSystem Halted!\n");
+        print_str((uint8*)exception_messages[r->int_no]);
+        print_str((uint8*)" Exception.\nSystem Halted!\n");
         while (1) {
             asm volatile("nop");
         }
