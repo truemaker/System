@@ -114,7 +114,7 @@ extern "C" void main(){
     print_raw(tty_buffer);
     clear();
     print_colored_str((char*)"Im Green in the front and red in the back", 0x0A, 0x0C);
-    File_Descriptor* fd = tfs_mkfile((uint8*)"hello.txt", (uint8)5);
+    File_Descriptor* fd = tfs_mkfile((uint8*)"/hello.txt", (uint8)5);
     uint8* buf = ram_get_sector(*fd->sector); // tfs_read_file(*fd);
     buf[0] = 'H';
     buf[1] = 'e';
@@ -126,7 +126,7 @@ extern "C" void main(){
     print_str(fd->name);
     next_line();
     print_str(tfs_read_file(*fd));
-    File_Descriptor* fd2 = tfs_mkfile((uint8*)"files/bye.txt", (uint8)3);
+    File_Descriptor* fd2 = tfs_mkfile((uint8*)"/files/bye.txt", (uint8)3);
     uint8* buf2 = ram_get_sector(*fd->sector); // tfs_read_file(*fd);
     buf2[0] = 'B';
     buf2[1] = 'y';
@@ -137,5 +137,7 @@ extern "C" void main(){
     print_str(fd2->name);
     next_line();
     print_str(tfs_read_file(*fd2));
+    File_Descriptor* devnull = tfs_mkdevice((uint8*)"/dev/null", 0);
+    print_str(tfs_read_file(*devnull));
     return;
 }
