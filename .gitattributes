@@ -1,1 +1,1 @@
-*.asm linguist-language=Assembler
+*.h linguist-language=C++
