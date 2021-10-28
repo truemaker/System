@@ -97,6 +97,29 @@ void print_str(uint8* str) {
     }
 }
 
+void print_binary(uint32 num)
+{
+  char bin_arr[32];
+  uint32 index = 31;
+  uint32 i;
+  while (num > 0){
+    if(num & 1){
+      bin_arr[index] = '1';
+    }else{
+      bin_arr[index] = '0';
+    }
+    index--;
+    num >>= 1;
+  }
+
+  for(i = 0; i < 32; ++i){
+   if(i <= index)
+      print_char('0');
+   else
+     print_char(bin_arr[i]);
+  }
+}
+
 void print_colored_str(const char* str, uint8 color, uint8 bg) {
     for (int i = 0; i < strlen((char*)str); i++) {
         print_colored_char(str[i], color, bg);

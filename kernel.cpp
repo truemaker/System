@@ -26,6 +26,7 @@ extern "C" {
 #include "TTY/tty.cpp"
 
 // CPU
+#include "CPU/cpuid.cpp"
 #include "CPU/idt.cpp"
 #include "CPU/isr.cpp"
 #include "CPU/irq.cpp"
@@ -36,13 +37,18 @@ extern "C" {
 
 // File system
 #include "FS/tfs.cpp"
-
+uint32 eax = 0;
+uint32 ebx = 0;
+uint32 ecx = 0;
+uint32 edx = 0;
 void hello() {
     print_str((uint8*)"Hello\n");
 }
 }
 
 void init() {
+    
+    cpuid(0x01, &eax, &ebx, &ecx, &edx);
     setup_devices();
     setup_tty();
     tty_set(0);
@@ -138,5 +144,13 @@ extern "C" void main(){
     next_line();
     print_str(tfs_read_file(*fd2));
     print_str(tfs_read_file(*devnull));
+    next_line();
+    print_binary(eax);
+    next_line();
+    print_binary(ebx);
+    next_line();
+    print_binary(ecx);
+    next_line();
+    print_binary(edx);
     return;
 }
