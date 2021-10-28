@@ -122,8 +122,26 @@ extern "C" void _fault_handler(struct regs *r)
     if (r->int_no < 32)
     {
         clear();
+		print_str((uint8*)"You got a BSOD have some fun\n");
+		next_line();
         print_str((uint8*)exception_messages[r->int_no]);
-        print_str((uint8*)" Exception.\nSystem Halted!\n");
+        print_str((uint8*)" Exception.\n");
+		next_line();
+		print_str((uint8*)"And here is some useless information:\n");
+		print_str((uint8*)"  EAX: ");
+    	print_binary(eax);
+    	next_line();
+		print_str((uint8*)"  EBX: ");
+    	print_binary(ebx);
+    	next_line();
+		print_str((uint8*)"  ECX: ");
+    	print_binary(ecx);
+    	next_line();
+		print_str((uint8*)"  EDX: ");
+    	print_binary(edx);
+		next_line();
+		next_line();
+		print_str((uint8*)"System Halted!");
         while (1) {
             asm volatile("nop");
         }

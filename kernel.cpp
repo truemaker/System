@@ -14,6 +14,12 @@ extern "C" {
 #include "Utils/convert.cpp"
 #include "Utils/str.cpp"
 
+// Informations
+uint32 eax = 0;
+uint32 ebx = 0;
+uint32 ecx = 0;
+uint32 edx = 0;
+
 // Interaction
 #include "Interaction/ports.cpp"
 
@@ -37,10 +43,7 @@ extern "C" {
 
 // File system
 #include "FS/tfs.cpp"
-uint32 eax = 0;
-uint32 ebx = 0;
-uint32 ecx = 0;
-uint32 edx = 0;
+
 void hello() {
     print_str((uint8*)"Hello\n");
 }
@@ -152,5 +155,6 @@ extern "C" void main(){
     print_binary(ecx);
     next_line();
     print_binary(edx);
+    int one = 1/0;
     return;
 }
