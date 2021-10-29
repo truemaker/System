@@ -1,7 +1,7 @@
 bool input_enabled = true;
 unsigned char kbdus[128] =
 {
-    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
+    0,  0x1b, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
   '9', '0', '-', '=', '\b',	/* Backspace */
   '\t',			/* Tab */
   'q', 'w', 'e', 'r',	/* 19 */
@@ -37,6 +37,45 @@ unsigned char kbdus[128] =
     0,	/* F11 Key */
     0,	/* F12 Key */
     0,	/* All other keys are undefined */
+};
+
+unsigned char kbdus_shift[128] =
+{
+    0,  
+    0x1b, /* esc */
+    '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+    '_', '+', '\b', '\t', 'Q', 'W', 'E', 'R',    
+    'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n',
+    0,  /* left control */
+    'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':','\"', '~',
+    0,    /* left shift */
+    '|', 'Z', 'X', 'C', 'V', 'B', 'N',
+    'M', '<', '>', '?',   
+    0,    /* right shift */
+    '*',
+    0,  /* alt */
+    ' ',/* space bar */
+    0,  /* caps lock */
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,   /* f1 ... f10 */
+    0,    /* num lock*/
+    0,    /* scroll lock */
+    0,    /* home key */
+    0,    /* up arrow */
+    0,    /* page up */
+    '-',
+    0,    /* left arrow */
+    0,
+    0,    /* right arrow */
+    '+',
+    0,    /* end key*/
+    0,    /* down arrow */
+    0,    /* page down */
+    0,    /* insert key */
+    0,    /* delete key */
+    0, 0, 0,
+    0,    /* f11 key */
+    0,    /* f12 key */
+    0,    /* all other keys are undefined */
 };
 
 bool shift_pressed = false;
@@ -82,7 +121,7 @@ void keyboard_handler(struct regs *r)
     		case 0x50: set_cursor_pos(cursor_pos +80); break;
     		case 0x2a: shift_pressed = true; break;
     		case 0x3a: caps_lock = !caps_lock; break;
-    		default: if (kbdus[scancode] != 0) input_char(kbdus[scancode], shift_pressed | caps_lock);
+    		default: if (kbdus[scancode] != 0  && !(shift_pressed | caps_lock)) { input_char(kbdus[scancode], shift_pressed | caps_lock);} else if (kbdus_shift[scancode] != 0  && (shift_pressed | caps_lock)) input_char(kbdus_shift[scancode], shift_pressed | caps_lock);
     	}
     }
 }

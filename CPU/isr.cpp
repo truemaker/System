@@ -1,10 +1,4 @@
-struct regs
-{
-    unsigned int gs, fs, es, ds;      /* pushed the segs last */
-    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;  /* pushed by 'pusha' */
-    unsigned int int_no, err_code;    /* our 'push byte #' and ecodes do this */
-    unsigned int eip, cs, eflags, useresp, ss;   /* pushed by the processor automatically */ 
-};
+
 
 
 extern "C" void _isr0();
@@ -80,38 +74,38 @@ void isrs_install()
 
 const char* exception_messages[] = 
 {
-	"Division By Zero",
-	"Debug",
-	"Non Maskable Interrupt",
-	"Breakpoint",
-	"Into Detected Overflow",
-	"Out of Bounds",
-	"Invalid Opcode",
-	"No Coprocessor",
-	"Double Fault",
-	"Coprocessor Segment Overrun",
-	"Bad TSS",
-	"Segment Not Present",
-	"Stack Fault",
-	"General Protection Fault",
-	"Page Fault",
-	"Unknown Interrupt",
-	"Coprocessor Fault",
-	"Alignment Check",
-	"Machine Check",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved"
+	"Division By Zero Exeption.",
+	"Debug Exeption.",
+	"Non Maskable Interrupt Exeption.",
+	"Breakpoint Exeption.",
+	"Into Detected Overflow Exeption.",
+	"Out of Bounds Exeption.",
+	"Invalid Opcode Exeption.",
+	"No Coprocessor Exeption.",
+	"Double Fault Exeption.",
+	"Coprocessor Segment Overrun Exeption.",
+	"Bad TSS Exeption.",
+	"Segment Not Present Exeption.",
+	"Stack Fault Exeption.",
+	"General Protection Fault Exeption.",
+	"Page Fault Exeption.",
+	"Unknown Interrupt Exeption.",
+	"Coprocessor Fault Exeption.",
+	"Alignment Check Exeption.",
+	"Machine Check Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserved Exeption.",
+	"Reserve Exeption.d"
 };
 
 
@@ -122,23 +116,7 @@ extern "C" void _fault_handler(struct regs *r)
     if (r->int_no < 32)
     {
         clear();
-		print_str((uint8*)"You got a BSOD have some fun\n");
-		next_line();
-        print_str((uint8*)exception_messages[r->int_no]);
-        print_str((uint8*)" Exception.\n");
-		next_line();
-		print_str((uint8*)"And here is some useless information:\n");
-		print_str((uint8*)"  EAX: ");
-    	print_binary(eax);
-    	next_line();
-		print_str((uint8*)"  EBX: ");
-    	print_binary(ebx);
-    	next_line();
-		print_str((uint8*)"  ECX: ");
-    	print_binary(ecx);
-    	next_line();
-		print_str((uint8*)"  EDX: ");
-    	print_binary(edx);
+		kpanic((uint8*)exception_messages[r->int_no], r);
 		next_line();
 		next_line();
 		print_str((uint8*)"System Halted!");

@@ -9,7 +9,7 @@ struct idt_entry
 
 struct idt_ptr
 {
-	unsigned short limit;
+	uint16 limit;
 	unsigned int base;
 } __attribute__((packed));
 

@@ -28,6 +28,9 @@ uint32 edx = 0;
 #include "Drivers/keyboard.cpp"
 #include "Drivers/disk.cpp"
 
+// BSOD
+#include "Utils/bsod.cpp"
+
 // TTY
 #include "TTY/tty.cpp"
 
@@ -37,6 +40,7 @@ uint32 edx = 0;
 #include "CPU/isr.cpp"
 #include "CPU/irq.cpp"
 #include "CPU/timer.cpp"
+#include "CPU/syscall.cpp"
 
 // Input
 #include "Input/keyboard.cpp"
@@ -50,7 +54,6 @@ void hello() {
 }
 
 void init() {
-    
     cpuid(0x01, &eax, &ebx, &ecx, &edx);
     setup_devices();
     setup_tty();
@@ -82,6 +85,11 @@ void init() {
     tty_out((char*)"Installing Interrupt Request Handler for Keyboard...");
     print_raw(tty_buffer);
     kb_install();
+    tty_color_out((char*)"OK\n", 0x0A, 0x00);
+    print_raw(tty_buffer);
+    tty_out((char*)"Installing Interrupt Request Handler for Syscall...");
+    print_raw(tty_buffer);
+    sys_init();
     tty_color_out((char*)"OK\n", 0x0A, 0x00);
     print_raw(tty_buffer);
     sleep(1);
@@ -155,6 +163,5 @@ extern "C" void main(){
     print_binary(ecx);
     next_line();
     print_binary(edx);
-    int one = 1/0;
     return;
 }

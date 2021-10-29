@@ -350,3 +350,42 @@ irq_common_stub:
 	popa
 	add esp, 8
 	iret
+
+
+
+global _syscall
+[extern] syscall_c
+_syscall:
+    push 0
+    push 0x80
+    jmp _isr_stub
+
+_isr_stub:
+    pusha
+    push ds
+    push es
+    push fs
+    push gs
+
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+
+    mov eax, esp
+    push eax
+
+    mov eax,syscall_c
+    call eax
+    pop eax
+
+_isr_stub_ret:
+    pop gs
+    pop fs
+    pop es
+    pop ds
+    popa
+    add esp, 8
+    iret
