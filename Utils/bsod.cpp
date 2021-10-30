@@ -1,5 +1,28 @@
 #include "../CPU/regs.h"
+
+void fill_reg(struct regs *reg) {
+    uint32 eaxres, ebxres, ecxres, edxres;
+    uint32 espres, ebpres, eipres, esires;
+    asm("movl\t%%eax, %0" : "=m" (eaxres));
+    asm("movl\t%%ebx, %0" : "=m" (ebxres));
+    asm("movl\t%%ecx, %0" : "=m" (ecxres));
+    asm("movl\t%%edx, %0" : "=m" (edxres));
+    asm("movl\t%%esp, %0" : "=m" (espres));
+    asm("movl\t%%ebp, %0" : "=m" (ebpres));
+    asm("movl\t%%esi, %0" : "=m" (esires));
+    reg->eax = eaxres;
+    reg->ebx = ebxres;
+    reg->ecx = ecxres;
+    reg->edx = edxres;
+    reg->esp = espres;
+    reg->ebp = ebpres;
+    reg->esi = esires;
+}
+
 void kpanic(uint8* message, regs* r) {
+    if (r == 0) {
+        fill_reg(r);
+    }
     clear();
     print_str((uint8*)"System crashed with exeption: ");
     print_str((uint8*)message);
@@ -64,4 +87,10 @@ void kpanic(uint8* message, regs* r) {
     print_str((uint8*)num_to_char(r->int_no));
     next_line();
     disable_input();
+    next_line();
+	next_line();
+	print_str((uint8*)"System Halted!");
+    while (1) {
+        asm volatile("nop");
+    }
 }

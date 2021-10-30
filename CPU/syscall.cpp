@@ -1,10 +1,10 @@
 extern void _syscall();
 
 void sys_0(regs* r) {
-    print_str((uint8*)"Syscall 0");
+    kernel_exit();
 }
 void sys_1(regs* r) {
-    print_str((uint8*)"Syscall 1");
+    tfs_mkfile((uint8*)r->ebx, r->ecx);
 }
 void sys_2(regs* r) {
     print_str((uint8*)"Syscall 2");
@@ -48,6 +48,12 @@ void sys_14(regs* r) {
 void sys_15(regs* r) {
     print_str((uint8*)"Syscall 15");
 }
+void sys_16(regs* r) {
+    print_str((uint8*)r->ebx);
+}
+void sys_17(regs* r) {
+    next_line();
+}
 
 void sys_undefined(regs* r) {
     r->err_code = r->eax;
@@ -76,6 +82,8 @@ void syscall_c(regs* r){
         case 0x0D: sys_13(r); break;
         case 0x0E: sys_14(r); break;
         case 0x0F: sys_15(r); break;
+        case 0x10: sys_16(r); break;
+        case 0x11: sys_17(r); break;
         default: sys_undefined(r); break;
     }
 }

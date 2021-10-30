@@ -7,4 +7,7 @@ struct regs
     unsigned int int_no, err_code;    /* our 'push byte #' and ecodes do this */
     unsigned int eip, cs, eflags, useresp, ss;   /* pushed by the processor automatically */ 
 };
+
+void fill_reg(struct regs *);
+uint32 current_pid;
 #endif

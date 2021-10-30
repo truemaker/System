@@ -1,5 +1,6 @@
 char kill_flag = 0;
 
+
 extern "C" {
 
 // IncBins
@@ -40,7 +41,14 @@ uint32 edx = 0;
 #include "CPU/isr.cpp"
 #include "CPU/irq.cpp"
 #include "CPU/timer.cpp"
-#include "CPU/syscall.cpp"
+
+void kernel_exit() {
+    clear_color(0x00);
+    print_colored_str("Shutting down...", 0x0F, 0x00);
+    asm("cli");
+    outw(0x604, 0x2000);
+    asm("hlt");
+}
 
 // Input
 #include "Input/keyboard.cpp"
@@ -48,9 +56,14 @@ uint32 edx = 0;
 // File system
 #include "FS/tfs.cpp"
 
+#include "CPU/syscall.cpp"
+uint16 shell_pos = 0;
 void hello() {
     print_str((uint8*)"Hello\n");
 }
+
+#include "UserMode/user_mode.cpp"
+
 }
 
 void init() {
@@ -61,107 +74,72 @@ void init() {
     tty_clear();
     set_cursor_pos(-1);
     disable_input();
-    tty_out((char*)"Initializing Interrupt Descriptor Table...");
+    tty_out((char*)"Initializing Interrupt Descriptor Table");
     print_raw(tty_buffer);
     idt_install();
-    tty_color_out((char*)"OK\n", 0x0A, 0x00);
-    tty_out((char*)"Initializing Interrupt Service(s)...");
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    tty_out((char*)"Initializing Interrupt Service(s)");
     print_raw(tty_buffer);
 	isrs_install();
-    tty_color_out((char*)"OK\n", 0x0A, 0x00);
-    tty_out((char*)"Initializing Interrupt Request Handler(s)...");
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    tty_out((char*)"Initializing Interrupt Request Handler(s)");
     print_raw(tty_buffer);
     irq_install();
-    tty_color_out((char*)"OK\n", 0x0A, 0x00);
-    tty_out((char*)"Initializing Dynamic Memory...");
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    tty_out((char*)"Initializing Dynamic Memory");
     print_raw(tty_buffer);
     initializeMem();
-    tty_color_out((char*)"OK\n", 0x0A, 0x00);
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
     asm volatile("sti");
-    tty_out((char*)"Installing Interrupt Request Handler for Timer...");
+    tty_out((char*)"Installing Interrupt Request Handler for Timer");
     print_raw(tty_buffer);
     timer_install();
-    tty_color_out((char*)"OK\n", 0x0A, 0x00);
-    tty_out((char*)"Installing Interrupt Request Handler for Keyboard...");
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    tty_out((char*)"Installing Interrupt Request Handler for Keyboard");
     print_raw(tty_buffer);
     kb_install();
-    tty_color_out((char*)"OK\n", 0x0A, 0x00);
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
     print_raw(tty_buffer);
-    tty_out((char*)"Installing Interrupt Request Handler for Syscall...");
+    tty_out((char*)"Installing Interrupt Request Handler for Syscall");
     print_raw(tty_buffer);
     sys_init();
-    tty_color_out((char*)"OK\n", 0x0A, 0x00);
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    print_raw(tty_buffer);
+    tty_out((char*)"Finishing Kernel Init...");
     print_raw(tty_buffer);
     sleep(1);
     enable_input();
     set_cursor_pos(0);
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    print_raw(tty_buffer);
+    tty_out((char*)"Starting Init\n");
+    print_raw(tty_buffer);
+    sleep(1);
+    setup_user_mode();
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    print_raw(tty_buffer);
+    set_cursor_pos(0);
+    start_user_mode();
+    shell_pos = *tty_pos;
+}
+
+extern "C" void kernel_loop() {
+    static char kernel_killed = 0;
+    if (kernel_killed == 1) {
+        kpanic((uint8*)"Critical Process died", 0x00);
+    }
 }
 
 extern "C" void main(){
     init();
-    tty_set(1);
-    tty_clear_color(0x08);
-    tty_color_out((char*)"Hi this is tty1 with a grey background\n", 0x0F, 0x08);
-    print_raw(tty_buffer);
-    sleep(1);
-    tty_set(2);
-    tty_out((char*)"Hi this is tty2\n");
-    print_raw(tty_buffer);
-    sleep(1);
-    tty_set(3);
-    tty_out((char*)"Hi this is tty3\n");
-    print_raw(tty_buffer);
-    sleep(1);
-    tty_set(4);
-    tty_out((char*)"Hi this is tty4\n");
-    print_raw(tty_buffer);
-    sleep(1);
-    tty_set(5);
-    tty_out((char*)"Hi this is tty5\n");
-    print_raw(tty_buffer);
-    sleep(1);
-    tty_set(6);
-    tty_out((char*)"Hi this is tty6\n");
-    print_raw(tty_buffer);
-    sleep(1);
-    tty_set(7);
-    tty_out((char*)"Hi this is tty7\n");
-    print_raw(tty_buffer);
-    sleep(1);
-    tty_set(0);
-    print_raw(tty_buffer);
-    clear();
-    print_colored_str((char*)"Im Green in the front and red in the back", 0x0A, 0x0C);
-    File_Descriptor* fd = tfs_mkfile((uint8*)"/hello.txt", (uint8)5);
-    uint8* buf = ram_get_sector(*fd->sector); // tfs_read_file(*fd);
-    buf[0] = 'H';
-    buf[1] = 'e';
-    buf[2] = 'l';
-    buf[3] = 'l';
-    buf[4] = 'o';
-    tfs_write_file(*fd, buf);
-    next_line();
-    print_str(fd->name);
-    next_line();
-    print_str(tfs_read_file(*fd));
-    File_Descriptor* fd2 = tfs_mkfile((uint8*)"/files/bye.txt", (uint8)3);
-    uint8* buf2 = ram_get_sector(*fd->sector); // tfs_read_file(*fd);
-    buf2[0] = 'B';
-    buf2[1] = 'y';
-    buf2[2] = 'e';
-    tfs_write_file(*fd2, buf2);
-    next_line();
-    print_str(fd2->name);
-    next_line();
-    print_str(tfs_read_file(*fd2));
-    print_str(tfs_read_file(*devnull));
-    next_line();
-    print_binary(eax);
-    next_line();
-    print_binary(ebx);
-    next_line();
-    print_binary(ecx);
-    next_line();
-    print_binary(edx);
-    return;
+    for (;;) {}
 }

@@ -1,6 +1,5 @@
 [org 0x7c00]                        
 KERNEL_LOCATION equ 0x1000
-                                    
 BOOT_DISK: db 0
 mov [BOOT_DISK], dl
 xor ax, ax
@@ -12,6 +11,10 @@ mov sp, bp
 mov bx, KERNEL_LOCATION
 mov dh, 52
 
+mov ah, 0x00
+mov al, 0x3
+int 0x10                ; text mode
+
 mov ah, 0x02
 mov al, dh 
 mov ch, 0x00
@@ -19,13 +22,9 @@ mov dh, 0x00
 mov cl, 0x02
 mov dl, [BOOT_DISK]
 int 0x13                ; no error management, do your homework!
-
-                                    
-mov ah, 0x00
-mov al, 0x3
-int 0x10                ; text mode
-
-
+jnc .after_load
+hlt
+.after_load:                            
 CODE_SEG equ GDT_code - GDT_start
 DATA_SEG equ GDT_data - GDT_start
 
@@ -37,8 +36,7 @@ mov cr0, eax
 jmp CODE_SEG:start_protected_mode
 
 jmp $
-                                    
-                                     
+
 GDT_start:
     GDT_null:
         dd 0x0

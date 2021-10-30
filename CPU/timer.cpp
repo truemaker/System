@@ -1,6 +1,9 @@
 int timer_ticks = 0;
 int seconds = 0;
 
+void kernel_loop();
+void vga_update();
+
 void timer_phase(int hz)
 {
 	int divisor = 1193180 / hz;	   /* Calculate our divisor */
@@ -13,7 +16,8 @@ void timer_handler(struct regs *r)
 {
     /* Increment our 'tick count' */
     timer_ticks++;
-
+    kernel_loop();
+    vga_update();
 
     if (timer_ticks % 18 == 0)
     {

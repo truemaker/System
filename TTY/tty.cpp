@@ -1,5 +1,4 @@
 int* tty_pos;
-uint16* tty_buffer;
 
 /*
 uint16 tty0[2200];
@@ -45,8 +44,17 @@ void tty_set_pos(int pos) {
     *tty_pos = pos;
 }
 
+void tty_sync() {
+    set_cursor_pos(*tty_pos);
+}
+
+void scrollPageUp(){
+    for(int i = 160*2; i < 4000 - 160; i++) *(tty_buffer + i - 160) = *(tty_buffer + i);
+}
+
 void tty_next_line() {
     tty_set_pos(((*tty_pos / 80) * 80) + 80);
+    // scrollPageUp();
 }
 
 void tty_char(uint8 c) {
@@ -55,7 +63,7 @@ void tty_char(uint8 c) {
     } else if (c == '\t') {
         tty_set_pos(*tty_pos + 4);
     } else if (c == '\b') {
-        tty_buffer[*tty_pos - 1] = vga_entry(0, 0xFF, 0x01);
+        tty_buffer[*tty_pos - 1] = vga_entry(0, 0x0F, 0x00);
         tty_set_pos(*tty_pos - 1);
     } else {
         tty_buffer[*tty_pos] = vga_entry(c, 0x0F, 0x00);

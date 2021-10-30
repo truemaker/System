@@ -117,12 +117,7 @@ extern "C" void _fault_handler(struct regs *r)
     {
         clear();
 		kpanic((uint8*)exception_messages[r->int_no], r);
-		next_line();
-		next_line();
-		print_str((uint8*)"System Halted!");
-        while (1) {
-            asm volatile("nop");
-        }
+
         // for (;;);
     }
 }

@@ -3,6 +3,10 @@ uint16* buffer = (uint16*) 0xB8000;
 uint8 fg_color = 0x0f;
 uint8 bg_color = 0x01;
 
+void tty_char(uint8 c);
+void tty_sync();
+uint16* tty_buffer;
+
 void disable_cursor()
 {
 	outb(0x3D4, 0x0A);
@@ -42,6 +46,8 @@ uint16 vga_entry(uint8 ch, uint8 fore_color, uint8 back_color)
   return ax;
 }
 
+void tty_set_pos(int pos);
+
 void set_cursor_pos(int pos) {
     cursor_pos = pos;
     SetCursorPosRaw(cursor_pos);
@@ -80,15 +86,7 @@ void print_colored_char(uint8 c, uint8 color, uint8 bg) {
 }
 
 void input_char(uint8 c, bool caps) {
-    if (caps) {
-        if (0 < (c - 96)) {
-            print_char(c - 32);
-        } else {
-            print_char(c);
-        }
-    } else {
-        print_char(c);
-    }
+    tty_char(c);
 }
 
 void print_str(uint8* str) {
@@ -144,4 +142,9 @@ void print_raw(uint16* raw) {
     for (uint32 i = 0; i < 2200; i++) {
         buffer[i] = raw[i];
     }
+}
+
+void vga_update() {
+    print_raw(tty_buffer);
+    tty_sync();
 }

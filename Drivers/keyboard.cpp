@@ -81,6 +81,9 @@ unsigned char kbdus_shift[128] =
 bool shift_pressed = false;
 bool caps_lock = false;
 
+void tty_set_pos(int pos);
+extern int* tty_pos;
+
 void disable_input() {
   input_enabled = false;;
 }
@@ -115,10 +118,10 @@ void keyboard_handler(struct regs *r)
     else
     {
     	switch(scancode){
-    		case 0x4b: set_cursor_pos(cursor_pos - 1); break;
-    		case 0x4d: set_cursor_pos(cursor_pos + 1); break;
-    		case 0x48: set_cursor_pos(cursor_pos - 80); break;
-    		case 0x50: set_cursor_pos(cursor_pos +80); break;
+    		case 0x4b: tty_set_pos(*tty_pos - 1); break;
+    		case 0x4d: tty_set_pos(*tty_pos + 1); break;
+    		case 0x48: tty_set_pos(*tty_pos - 80); break;
+    		case 0x50: tty_set_pos(*tty_pos + 80); break;
     		case 0x2a: shift_pressed = true; break;
     		case 0x3a: caps_lock = !caps_lock; break;
     		default: if (kbdus[scancode] != 0  && !(shift_pressed | caps_lock)) { input_char(kbdus[scancode], shift_pressed | caps_lock);} else if (kbdus_shift[scancode] != 0  && (shift_pressed | caps_lock)) input_char(kbdus_shift[scancode], shift_pressed | caps_lock);
