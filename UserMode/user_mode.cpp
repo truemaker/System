@@ -4,14 +4,30 @@ void user_ok() {
     print_raw(tty_buffer);
 }
 
+// Libraries
+#include "Libraries/stdio.cpp"
+
+// Services
+#include "services.cpp"
+
+// Applications
+#include "Applications/license.cpp"
+#include "Applications/sh.cpp"
+#include "Applications/login.cpp"
+
 void setup_user_mode() {
-    tty_out("Starting Services...");
+    tty_out((char*)"Switching to user mode...");
     user_ok();
-    tty_out("Starting Login...");
+    tty_out((char*)"Starting Services...");
+    startup_all_services();
+    user_ok();
+    tty_out((char*)"Starting Login...");
     sleep(1);
+    start_login();
+    user_ok();
 }
 
 void start_user_mode() {
-    tty_clear();
-    tty_out((char*)"Login: ");
+    user_mode = 1;
+    run_login();
 }

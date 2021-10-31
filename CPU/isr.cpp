@@ -112,12 +112,15 @@ const char* exception_messages[] =
 
 extern "C" void _fault_handler(struct regs *r)
 {
-
     if (r->int_no < 32)
     {
+		if (user_mode == 1) {
+			asm("sti");
+			fallback();
+			return;
+		}
         clear();
 		kpanic((uint8*)exception_messages[r->int_no], r);
-
         // for (;;);
     }
 }

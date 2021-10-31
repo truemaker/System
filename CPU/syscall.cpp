@@ -7,52 +7,52 @@ void sys_1(regs* r) {
     tfs_mkfile((uint8*)r->ebx, r->ecx);
 }
 void sys_2(regs* r) {
-    print_str((uint8*)"Syscall 2");
+    tty_out((char*)"Syscall 2");
 }
 void sys_3(regs* r) {
-    print_str((uint8*)"Syscall 3");
+    tty_out((char*)"Syscall 3");
 }
 void sys_4(regs* r) {
-    print_str((uint8*)"Syscall 4");
+    tty_out((char*)"Syscall 4");
 }
 void sys_5(regs* r) {
-    print_str((uint8*)"Syscall 5");
+    tty_out((char*)"Syscall 5");
 }
 void sys_6(regs* r) {
-    print_str((uint8*)"Syscall 6");
+    tty_out((char*)"Syscall 6");
 }
 void sys_7(regs* r) {
-    print_str((uint8*)"Syscall 7");
+    tty_out((char*)"Syscall 7");
 }
 void sys_8(regs* r) {
-    print_str((uint8*)"Syscall 8");
+    tty_out((char*)"Syscall 8");
 }
 void sys_9(regs* r) {
-    print_str((uint8*)"Syscall 9");
+    tty_out((char*)"Syscall 9");
 }
 void sys_10(regs* r) {
-    print_str((uint8*)"Syscall 10");
+    tty_out((char*)"Syscall 10");
 }
 void sys_11(regs* r) {
-    print_str((uint8*)"Syscall 11");
+    tty_out((char*)"Syscall 11");
 }
 void sys_12(regs* r) {
-    print_str((uint8*)"Syscall 12");
+    tty_out((char*)"Syscall 12");
 }
 void sys_13(regs* r) {
-    print_str((uint8*)"Syscall 13");
+    tty_out((char*)"Syscall 13");
 }
 void sys_14(regs* r) {
-    print_str((uint8*)"Syscall 14");
+    tty_out((char*)"Syscall 14");
 }
 void sys_15(regs* r) {
-    print_str((uint8*)"Syscall 15");
+    tty_out((char*)"Syscall 15");
 }
 void sys_16(regs* r) {
-    print_str((uint8*)r->ebx);
+    tty_out((char*)r->ebx);
 }
 void sys_17(regs* r) {
-    next_line();
+    tty_next_line();
 }
 
 void sys_undefined(regs* r) {

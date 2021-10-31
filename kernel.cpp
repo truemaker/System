@@ -20,6 +20,7 @@ uint32 eax = 0;
 uint32 ebx = 0;
 uint32 ecx = 0;
 uint32 edx = 0;
+uint8 user_mode = 0x00;
 
 // Interaction
 #include "Interaction/ports.cpp"
@@ -28,6 +29,9 @@ uint32 edx = 0;
 #include "Drivers/vga.cpp"
 #include "Drivers/keyboard.cpp"
 #include "Drivers/disk.cpp"
+
+// Fallback system
+#include "Fallback/kernel.cpp"
 
 // BSOD
 #include "Utils/bsod.cpp"
@@ -63,7 +67,6 @@ void hello() {
 }
 
 #include "UserMode/user_mode.cpp"
-
 }
 
 void init() {
@@ -124,9 +127,6 @@ void init() {
     print_raw(tty_buffer);
     sleep(1);
     setup_user_mode();
-    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
-    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
-    print_raw(tty_buffer);
     set_cursor_pos(0);
     start_user_mode();
     shell_pos = *tty_pos;

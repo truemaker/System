@@ -9,6 +9,7 @@ section .text
     main_loop:
     jmp main_loop
 %include "CPU/interrupt.asm"
+%include "UserMode/Libraries/libs.asm"
 
 section .data
     hello dw "Hello World!"

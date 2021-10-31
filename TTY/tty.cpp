@@ -1,5 +1,4 @@
-int* tty_pos;
-
+#include "../FS/tfs.cpp"
 /*
 uint16 tty0[2200];
 uint16 tty1[2200];
@@ -29,6 +28,14 @@ void setup_tty() {
     tty5 = (uint16*)kmalloc(2200 * 2);
     tty6 = (uint16*)kmalloc(2200 * 2);
     tty7 = (uint16*)kmalloc(2200 * 2);
+    tfs_mkdevice((uint8*)"/dev/tty0", (uint8*)tty0, sizeof(tty0));
+    tfs_mkdevice((uint8*)"/dev/tty1", (uint8*)tty1, sizeof(tty1));
+    tfs_mkdevice((uint8*)"/dev/tty2", (uint8*)tty2, sizeof(tty2));
+    tfs_mkdevice((uint8*)"/dev/tty3", (uint8*)tty3, sizeof(tty3));
+    tfs_mkdevice((uint8*)"/dev/tty4", (uint8*)tty4, sizeof(tty4));
+    tfs_mkdevice((uint8*)"/dev/tty5", (uint8*)tty5, sizeof(tty5));
+    tfs_mkdevice((uint8*)"/dev/tty6", (uint8*)tty6, sizeof(tty6));
+    tfs_mkdevice((uint8*)"/dev/tty7", (uint8*)tty7, sizeof(tty7));
 }
 
 int tty0_pos = 0;
@@ -54,7 +61,6 @@ void scrollPageUp(){
 
 void tty_next_line() {
     tty_set_pos(((*tty_pos / 80) * 80) + 80);
-    // scrollPageUp();
 }
 
 void tty_char(uint8 c) {
@@ -63,6 +69,7 @@ void tty_char(uint8 c) {
     } else if (c == '\t') {
         tty_set_pos(*tty_pos + 4);
     } else if (c == '\b') {
+        if (*tty_pos - 1 < listen_start && listen == 1) return;
         tty_buffer[*tty_pos - 1] = vga_entry(0, 0x0F, 0x00);
         tty_set_pos(*tty_pos - 1);
     } else {
@@ -102,9 +109,9 @@ void tty_color_out(char* str, uint8 color, uint8 bg) {
 void tty_show_tty_num(uint8 num) {
     tty_buffer = tty0;
     tty_pos = &tty0_pos;
-    tty_out("Switched to TTY");
+    tty_out((char*)"Switched to TTY");
     tty_out(num_to_char(num));
-    tty_out("\n");
+    tty_out((char*)"\n");
 }
 
 void tty_clear() {
@@ -126,7 +133,7 @@ void tty_set(uint8 ttyIdx) {
         tty_show_tty_num(ttyIdx);
     }
     switch (ttyIdx) {
-        case 0: tty_buffer = tty0; tty_pos = &tty0_pos; tty_out("Switched to TTY0\n"); break;
+        case 0: tty_buffer = tty0; tty_pos = &tty0_pos; tty_out((char*)"Switched to TTY0\n"); break;
         case 1: tty_buffer = tty1; tty_pos = &tty1_pos; break;
         case 2: tty_buffer = tty2; tty_pos = &tty2_pos; break;
         case 3: tty_buffer = tty3; tty_pos = &tty3_pos; break;

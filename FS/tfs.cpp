@@ -1,5 +1,6 @@
 // This is a own File System
-
+#ifndef TFS
+#define TFS 0
 uint8 file_type_file = 0;
 uint8 file_type_device = 1;
 
@@ -75,3 +76,4 @@ void tfs_write_file(File_Descriptor fd, uint8* buf) {
 void setup_devices() {
     devnull = tfs_mkdevice((uint8*)"/dev/null", (uint8*)0, (uint8)0);
 }
+#endif
