@@ -11,23 +11,26 @@ void user_ok() {
 #include "services.cpp"
 
 // Applications
+#include "Applications/exit.cpp"
 #include "Applications/license.cpp"
 #include "Applications/sh.cpp"
 #include "Applications/login.cpp"
 
 void setup_user_mode() {
+    user_ok();
     tty_out((char*)"Switching to user mode...");
     user_ok();
     tty_out((char*)"Starting Services...");
     startup_all_services();
-    user_ok();
     tty_out((char*)"Starting Login...");
     sleep(1);
-    start_login();
     user_ok();
+    start_login();
+    
 }
 
 void start_user_mode() {
     user_mode = 1;
     run_login();
+    kernel_exit();
 }

@@ -12,8 +12,9 @@ void start_user_manager() {
 }
 
 void startup_all_services() {
-    tty_next_line();
+    user_ok();
     start_cinit();
     user_ok();
     start_user_manager();
+    user_ok();
 }

@@ -13,6 +13,5 @@ void run_login() {
     outu(user);
     out("\n");
     user_manager_user = user;
-    start_license();
     start_sh();
 }

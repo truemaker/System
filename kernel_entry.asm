@@ -10,6 +10,7 @@ section .text
     jmp main_loop
 %include "CPU/interrupt.asm"
 %include "UserMode/Libraries/libs.asm"
+%include "UserMode/Applications/applications.asm"
 
 section .data
     hello dw "Hello World!"

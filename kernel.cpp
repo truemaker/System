@@ -123,7 +123,7 @@ void init() {
     tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
     tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
     print_raw(tty_buffer);
-    tty_out((char*)"Starting Init\n");
+    tty_out((char*)"Starting Init");
     print_raw(tty_buffer);
     sleep(1);
     setup_user_mode();
@@ -141,5 +141,4 @@ extern "C" void kernel_loop() {
 
 extern "C" void main(){
     init();
-    for (;;) {}
 }

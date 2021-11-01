@@ -1,5 +1,7 @@
 #include "../CPU/regs.h"
 
+void tty_set(uint8 tty);
+
 void fill_reg(struct regs *reg) {
     uint32 eaxres, ebxres, ecxres, edxres;
     uint32 espres, ebpres, eipres, esires;
@@ -23,6 +25,7 @@ void kpanic(uint8* message, regs* r) {
     if (r == 0) {
         fill_reg(r);
     }
+    asm("cli");
     clear();
     print_str((uint8*)"System crashed with exeption: ");
     print_str((uint8*)message);
@@ -90,7 +93,7 @@ void kpanic(uint8* message, regs* r) {
     next_line();
 	next_line();
 	print_str((uint8*)"System Halted!");
-    while (1) {
-        asm volatile("nop");
-    }
+loop:
+    asm("nop");
+    goto loop;
 }

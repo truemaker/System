@@ -1,3 +1,13 @@
+extern void start_shutdown();
+
+uint8 sh_should_exit = 0;
+
+void start_sh();
+
+void sh_exit() {
+    sh_should_exit = 1;
+}
+
 void sh_command_prompt(uint8* user) {
     outu(user);
     out("@myos$ ");
@@ -6,6 +16,7 @@ void sh_command_prompt(uint8* user) {
 uint8 sh_command_execute(uint8* command) {
     uint8* name = (uint8*)kmalloc(255);
     uint8* args = (uint8*)kmalloc(255);
+    uint8 executed = 0;
     uint8 is_command = 1;
     uint8 is_args = 0;
     int start_args = 0;
@@ -22,11 +33,29 @@ uint8 sh_command_execute(uint8* command) {
                 args[i - start_args] = command[i];
             }
         }
-        out("Command: ");
-        outu(name);
-        out(" with argument(s): ");
-        outu(args);
-        out("\n");
+        uint8* processed_name = (uint8*)kmalloc(strlen((char*)name) + 1);
+        for (int i = 0; i < strlen((char*)name); i++) {
+            processed_name[i] = name[i];
+        }
+        if (strcompare((char*)processed_name, (char*)"shutdown")) {
+            executed = 1;
+            start_shutdown();
+        }
+        if (strcompare((char*)processed_name, (char*)"exit")) {
+            executed = 1;
+            start_exit();
+        }
+        if (strcompare((char*)processed_name, (char*)"sh")) {
+            executed = 1;
+            start_sh();
+        }
+        if (executed == 1) {
+            out("\n");
+        } else {
+            out("Could not find command: ");
+            outu(processed_name);
+            out("\n");
+        }
     }
     return 0;
 }
@@ -35,10 +64,16 @@ void start_sh() {
     out("\n");
     uint8* user = user_manager_get_user();
     uint8 exit_code;
-    while (1) {
+    while (sh_should_exit == 0) {
+        if (*tty_pos > 2000 - 160) {
+            tty_clear();
+        }
         sh_command_prompt(user);
         uint8* cmd = inputk();
-        out("\n");
+        if (strlen((char*)cmd) > 0) {
+            out("\n");
+        }
         exit_code = sh_command_execute(cmd);
     }
+    sh_should_exit = 0;
 }
