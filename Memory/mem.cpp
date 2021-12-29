@@ -53,7 +53,7 @@ void memunrec(){
 int getFreeMem(){
    return freeMem; 
 }
-#else
+#endif
 typedef struct dynamic_mem_node {
     uint32 size;
     bool used;
@@ -65,10 +65,11 @@ typedef struct dynamic_mem_node {
 #define DYNAMIC_MEM_TOTAL_SIZE 4*1024
 #define DYNAMIC_MEM_NODE_SIZE sizeof(dynamic_mem_node_t) // 16
 
-static uint8 dynamic_mem_area[DYNAMIC_MEM_TOTAL_SIZE];
+static uint8* dynamic_mem_area;//[DYNAMIC_MEM_TOTAL_SIZE];
 static dynamic_mem_node_t *dynamic_mem_start;
 
 void init_dynamic_mem() {
+    dynamic_mem_area = (uint8*)kmalloc(DYNAMIC_MEM_TOTAL_SIZE);
     dynamic_mem_start = (dynamic_mem_node_t *) dynamic_mem_area;
     dynamic_mem_start->size = DYNAMIC_MEM_TOTAL_SIZE - DYNAMIC_MEM_NODE_SIZE;
     dynamic_mem_start->next = (dynamic_mem_node_t*)(NULL_POINTER);
@@ -98,7 +99,7 @@ void *find_best_mem_block(dynamic_mem_node_t *dynamic_mem, int size) {
     return best_mem_block;
 }
 
-void* kmalloc(int size) {
+void* umalloc(int size) {
     dynamic_mem_node_t *best_mem_block =
             (dynamic_mem_node_t *) find_best_mem_block(dynamic_mem_start, size);
 
@@ -162,7 +163,7 @@ void *merge_current_node_into_previous(dynamic_mem_node_t *current_mem_node) {
 }
 
 
-void memcut(void *p) {
+void umemcut(void *p) {
     // move along, nothing to free here
     if (p == (dynamic_mem_node_t*)(NULL_POINTER)) {
         return;
@@ -183,4 +184,3 @@ void memcut(void *p) {
     current_mem_node = (dynamic_mem_node_t*)merge_next_node_into_current(current_mem_node);
     merge_current_node_into_previous(current_mem_node);
 }
-#endif

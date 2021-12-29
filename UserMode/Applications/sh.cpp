@@ -14,8 +14,8 @@ void sh_command_prompt(uint8* user) {
 }
 
 uint8 sh_command_execute(uint8* command) {
-    uint8* name = (uint8*)kmalloc(255);
-    uint8* args = (uint8*)kmalloc(255);
+    uint8* name = (uint8*)umalloc(255);
+    uint8* args = (uint8*)umalloc(255);
     uint8 executed = 0;
     uint8 is_command = 1;
     uint8 is_args = 0;
@@ -33,7 +33,8 @@ uint8 sh_command_execute(uint8* command) {
                 args[i - start_args] = command[i];
             }
         }
-        uint8* processed_name = (uint8*)kmalloc(strlen((char*)name) + 1);
+        uint8* processed_name = (uint8*)umalloc(strlen((char*)name) + 1);
+        umemcut(name);
         for (int i = 0; i < strlen((char*)name); i++) {
             processed_name[i] = name[i];
         }
@@ -55,7 +56,9 @@ uint8 sh_command_execute(uint8* command) {
             outu(processed_name);
             out("\n");
         }
+        umemcut(processed_name);
     }
+    umemcut(args);
     return 0;
 }
 
