@@ -50,7 +50,6 @@ uint8 sh_command_execute(uint8* command) {
             start_sh();
         }
         if (executed == 1) {
-            out("\n");
         } else {
             out("Could not find command: ");
             outu(processed_name);

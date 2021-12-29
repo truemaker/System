@@ -29,8 +29,9 @@ void setup_user_mode() {
     
 }
 
-void start_user_mode() {
+int start_user_mode() {
     user_mode = 1;
     run_login();
     kernel_exit();
+    return 0;
 }

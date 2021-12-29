@@ -1,7 +1,9 @@
 char kill_flag = 0;
-
+#define STATIC_MEMORY_ALLOCATOR
 
 extern "C" {
+// Types
+#include "Utils/types.cpp"
 
 // IncBins
 #include "IncBins/incbins.cpp"
@@ -10,7 +12,6 @@ extern "C" {
 #include "Memory/mem.cpp"
 
 // Utils
-#include "Utils/types.cpp"
 #include "Utils/num.cpp"
 #include "Utils/convert.cpp"
 #include "Utils/str.cpp"
@@ -71,6 +72,11 @@ void hello() {
 
 void init() {
     cpuid(0x01, &eax, &ebx, &ecx, &edx);
+    #ifdef STATIC_MEMORY_ALLOCATOR
+    initializeMem();
+    #else
+    init_dynamic_mem();
+    #endif
     setup_devices();
     setup_tty();
     tty_set(0);
@@ -92,11 +98,7 @@ void init() {
     irq_install();
     tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
     tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
-    tty_out((char*)"Initializing Dynamic Memory");
-    print_raw(tty_buffer);
-    initializeMem();
-    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
-    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+
     asm volatile("sti");
     tty_out((char*)"Installing Interrupt Request Handler for Timer");
     print_raw(tty_buffer);

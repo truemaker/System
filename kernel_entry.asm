@@ -3,8 +3,9 @@ extern kernel_exit
 section .text
     [bits 32]
     [extern main]
+    [extern start_user_mode]
     call main
-    call kernel_exit
+    ; call kernel_exit
     ; put system into infinite loop
     main_loop:
     jmp main_loop

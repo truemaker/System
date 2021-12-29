@@ -14,7 +14,7 @@ uint8* passwdk() {
 
 void outc(char* str) {
     tty_out(str);
-    // _out((uint8*)str);
+    //_out((uint8*)str);
 }
 
 void outu(uint8* str) {

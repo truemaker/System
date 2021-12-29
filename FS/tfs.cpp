@@ -48,9 +48,7 @@ File_Descriptor* tfs_mkdevice(uint8* path, uint8* address, uint8 size) {
 uint8* tfs_read_file(File_Descriptor fd) {
     if (*fd.type == file_type_device) {
         if (fd.name == (uint8*)"/dev/null") {
-            memrec();
             uint8* zeros = (uint8*)kmalloc(512);
-            memunrec();
             return zeros;
         }
     } else {
