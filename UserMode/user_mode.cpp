@@ -13,6 +13,7 @@ void user_ok() {
 // Applications
 #include "Applications/exit.cpp"
 #include "Applications/license.cpp"
+#include "Applications/tty.cpp"
 #include "Applications/sh.cpp"
 #include "Applications/login.cpp"
 
@@ -23,7 +24,6 @@ void setup_user_mode() {
     tty_out((char*)"Starting Services...");
     startup_all_services();
     tty_out((char*)"Starting Login...");
-    sleep(1);
     user_ok();
     start_login();
     

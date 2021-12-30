@@ -72,17 +72,16 @@ void hello() {
 
 void init() {
     cpuid(0x01, &eax, &ebx, &ecx, &edx);
-    #ifdef STATIC_MEMORY_ALLOCATOR
     initializeMem();
-    #else
     init_dynamic_mem();
-    #endif
     setup_devices();
     setup_tty();
     tty_set(0);
     tty_clear();
     set_cursor_pos(-1);
     disable_input();
+    tty_out((char*)"MyOS Kernel v0.1\n");
+    print_raw(tty_buffer);
     tty_out((char*)"Initializing Interrupt Descriptor Table");
     print_raw(tty_buffer);
     idt_install();
@@ -98,8 +97,11 @@ void init() {
     irq_install();
     tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
     tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
-
+    tty_out((char*)"Enabling Interrupt Requests");
+    print_raw(tty_buffer);
     asm volatile("sti");
+    tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
+    tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
     tty_out((char*)"Installing Interrupt Request Handler for Timer");
     print_raw(tty_buffer);
     timer_install();
@@ -119,15 +121,14 @@ void init() {
     print_raw(tty_buffer);
     tty_out((char*)"Finishing Kernel Init...");
     print_raw(tty_buffer);
-    sleep(1);
     enable_input();
     set_cursor_pos(0);
     tty_set_pos(((*tty_pos / 80) * 80) + 80 - 5);
     tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
+    tty_out((char*)"Welcome to MyOS\n");
     print_raw(tty_buffer);
     tty_out((char*)"Starting Init");
     print_raw(tty_buffer);
-    sleep(1);
     setup_user_mode();
     set_cursor_pos(0);
     start_user_mode();

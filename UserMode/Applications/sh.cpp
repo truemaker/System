@@ -50,6 +50,10 @@ uint8 sh_command_execute(uint8* command) {
             executed = 1;
             start_sh();
         }
+        if (strcompare((char*)processed_name, (char*)"tty")) {
+            executed = 1;
+            start_tty(args);
+        }
         if (executed == 1) {
         } else {
             out("Could not find command: ");
