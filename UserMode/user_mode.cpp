@@ -6,6 +6,8 @@ void user_ok() {
 
 // Libraries
 #include "Libraries/stdio.cpp"
+#include "Libraries/graphics.h"
+#include "Libraries/graphics.cpp"
 
 // Services
 #include "services.cpp"
@@ -14,6 +16,7 @@ void user_ok() {
 #include "Applications/exit.cpp"
 #include "Applications/license.cpp"
 #include "Applications/tty.cpp"
+#include "Applications/desktop.cpp"
 #include "Applications/sh.cpp"
 #include "Applications/login.cpp"
 

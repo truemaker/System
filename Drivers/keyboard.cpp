@@ -97,7 +97,7 @@ void keyboard_handler(struct regs *r)
     if (!input_enabled) return;
     unsigned char scancode;
 
-    scancode = inb(0x60);
+    scancode = inb(DATA_PORT);
 
     /* If the top bit of the byte we read from the keyboard is
     *  set, that means that a key has just been released */

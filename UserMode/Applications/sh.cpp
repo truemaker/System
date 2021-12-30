@@ -54,6 +54,10 @@ uint8 sh_command_execute(uint8* command) {
             executed = 1;
             start_tty(args);
         }
+        if (strcompare((char*)processed_name, (char*)"desktop")) {
+            executed = 1;
+            start_desktop();
+        }
         if (executed == 1) {
         } else {
             out("Could not find command: ");

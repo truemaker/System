@@ -2,6 +2,9 @@ char kill_flag = 0;
 #define STATIC_MEMORY_ALLOCATOR
 
 extern "C" {
+// Defines
+#include "Defines/mouse_and_keyboard.cpp"
+
 // Types
 #include "Utils/types.cpp"
 

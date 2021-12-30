@@ -7,10 +7,6 @@ void sys_1(regs* r) {
     tfs_mkfile((uint8*)r->ebx, r->ecx);
 }
 void sys_2(regs* r) {
-    int (*func)(){(int (*)())&r->ebx};
-    if (((*func)()) > 0) {
-        kernel_exit();
-    }
 }
 void sys_3(regs* r) {
     tty_out((char*)"Syscall 3");
