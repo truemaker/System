@@ -19,6 +19,15 @@ uint16* tty4;
 uint16* tty6;
 uint16* tty7;
 
+uint32* tty0_pos;
+uint32* tty1_pos;
+uint32* tty2_pos;
+uint32* tty3_pos;
+uint32* tty4_pos;
+uint32* tty5_pos;
+uint32* tty6_pos;
+uint32* tty7_pos;
+
 void setup_tty() {
     tty0 = (uint16*)kmalloc(2200 * 2);
     tty1 = (uint16*)kmalloc(2200 * 2);
@@ -28,24 +37,25 @@ void setup_tty() {
     tty5 = (uint16*)kmalloc(2200 * 2);
     tty6 = (uint16*)kmalloc(2200 * 2);
     tty7 = (uint16*)kmalloc(2200 * 2);
-    tfs_mkdevice((uint8*)"/dev/tty0", (uint8*)tty0, sizeof(tty0));
+    tty0_pos = (uint32*)kmalloc(sizeof(uint32));
+    tty1_pos = (uint32*)kmalloc(sizeof(uint32));
+    tty2_pos = (uint32*)kmalloc(sizeof(uint32));
+    tty3_pos = (uint32*)kmalloc(sizeof(uint32));
+    tty4_pos = (uint32*)kmalloc(sizeof(uint32));
+    tty5_pos = (uint32*)kmalloc(sizeof(uint32));
+    tty6_pos = (uint32*)kmalloc(sizeof(uint32));
+    tty7_pos = (uint32*)kmalloc(sizeof(uint32));
+    /*tfs_mkdevice((uint8*)"/dev/tty0", (uint8*)tty0, sizeof(tty0));
     tfs_mkdevice((uint8*)"/dev/tty1", (uint8*)tty1, sizeof(tty1));
     tfs_mkdevice((uint8*)"/dev/tty2", (uint8*)tty2, sizeof(tty2));
     tfs_mkdevice((uint8*)"/dev/tty3", (uint8*)tty3, sizeof(tty3));
     tfs_mkdevice((uint8*)"/dev/tty4", (uint8*)tty4, sizeof(tty4));
     tfs_mkdevice((uint8*)"/dev/tty5", (uint8*)tty5, sizeof(tty5));
     tfs_mkdevice((uint8*)"/dev/tty6", (uint8*)tty6, sizeof(tty6));
-    tfs_mkdevice((uint8*)"/dev/tty7", (uint8*)tty7, sizeof(tty7));
+    tfs_mkdevice((uint8*)"/dev/tty7", (uint8*)tty7, sizeof(tty7));*/
 }
 
-int tty0_pos = 0;
-int tty1_pos = 0;
-int tty2_pos = 0;
-int tty3_pos = 0;
-int tty4_pos = 0;
-int tty5_pos = 0;
-int tty6_pos = 0;
-int tty7_pos = 0;
+
 
 void tty_set_pos(int pos) {
     *tty_pos = pos;
@@ -108,7 +118,7 @@ void tty_color_out(char* str, uint8 color, uint8 bg) {
 
 void tty_show_tty_num(uint8 num) {
     tty_buffer = tty0;
-    tty_pos = &tty0_pos;
+    tty_pos = tty0_pos;
     tty_out((char*)"Switched to TTY");
     tty_out(num_to_char(num));
     tty_out((char*)"\n");
@@ -133,14 +143,14 @@ void tty_set(uint8 ttyIdx) {
         tty_show_tty_num(ttyIdx);
     }
     switch (ttyIdx) {
-        case 0: tty_buffer = tty0; tty_pos = &tty0_pos; tty_out((char*)"Switched to TTY0\n"); break;
-        case 1: tty_buffer = tty1; tty_pos = &tty1_pos; break;
-        case 2: tty_buffer = tty2; tty_pos = &tty2_pos; break;
-        case 3: tty_buffer = tty3; tty_pos = &tty3_pos; break;
-        case 4: tty_buffer = tty4; tty_pos = &tty4_pos; break;
-        case 5: tty_buffer = tty5; tty_pos = &tty5_pos; break;
-        case 6: tty_buffer = tty6; tty_pos = &tty6_pos; break;
-        case 7: tty_buffer = tty7; tty_pos = &tty7_pos; break;
+        case 0: tty_buffer = tty0; tty_pos = tty0_pos; tty_out((char*)"Switched to TTY0\n"); break;
+        case 1: tty_buffer = tty1; tty_pos = tty1_pos; break;
+        case 2: tty_buffer = tty2; tty_pos = tty2_pos; break;
+        case 3: tty_buffer = tty3; tty_pos = tty3_pos; break;
+        case 4: tty_buffer = tty4; tty_pos = tty4_pos; break;
+        case 5: tty_buffer = tty5; tty_pos = tty5_pos; break;
+        case 6: tty_buffer = tty6; tty_pos = tty6_pos; break;
+        case 7: tty_buffer = tty7; tty_pos = tty7_pos; break;
         default: print_str((uint8*)"Error: invalid ttyIdx\n");
     }
 }

@@ -94,6 +94,8 @@ void init_graphics()
   graphics_back_buffer = (uint8*)kmalloc(GRAPHICS_MAX);
   graphics_buffer = (uint8*)GRAPHICS_ADDRESS;
   gClear();
+  gInitialized = 1;
+  gSwap();
 }
 
 void putpixel(uint16 x, uint16 y, uint8 color)

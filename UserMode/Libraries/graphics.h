@@ -7,6 +7,7 @@
 #define GRAPHICS_MAX_HEIGHT 200
 
 uint8* graphics_buffer;
+uint8 gInitialized = 0;
 
 enum graphics_color {
   BLACK,
@@ -60,6 +61,7 @@ Miscellaneous Output
 
 void init_graphics();
 void gClear();
+void gSwap();
 void gClear_color(uint8 color);
 void putpixel(uint16 x, uint16 y, uint8 color);
 void setpixel(uint16 index, uint8 color);

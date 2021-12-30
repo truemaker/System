@@ -18,6 +18,9 @@ void timer_handler(struct regs *r)
     timer_ticks++;
     kernel_loop();
     vga_update();
+    if (gInitialized == 1) {
+        gSwap();
+    }
 
     if (timer_ticks % 18 == 0)
     {

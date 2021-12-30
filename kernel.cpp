@@ -8,6 +8,9 @@ extern "C" {
 // Types
 #include "Utils/types.cpp"
 
+// Graphics
+#include "UserMode/Libraries/graphics.h"
+
 // IncBins
 #include "IncBins/incbins.cpp"
 
@@ -62,10 +65,9 @@ void kernel_exit() {
 #include "Input/keyboard.cpp"
 
 // File system
-#include "FS/tfs.cpp"
+//#include "FS/tfs.cpp"
 
 #include "CPU/syscall.cpp"
-uint16 shell_pos = 0;
 void hello() {
     print_str((uint8*)"Hello\n");
 }
@@ -77,7 +79,7 @@ void init() {
     cpuid(0x01, &eax, &ebx, &ecx, &edx);
     initializeMem();
     init_dynamic_mem();
-    setup_devices();
+    //setup_devices();
     setup_tty();
     tty_set(0);
     tty_clear();
@@ -135,7 +137,6 @@ void init() {
     setup_user_mode();
     set_cursor_pos(0);
     start_user_mode();
-    shell_pos = *tty_pos;
 }
 
 extern "C" void kernel_loop() {
@@ -145,6 +146,6 @@ extern "C" void kernel_loop() {
     }
 }
 
-extern "C" void main(){
+extern "C" void main() {
     init();
 }

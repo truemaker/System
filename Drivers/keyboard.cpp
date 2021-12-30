@@ -82,7 +82,7 @@ bool shift_pressed = false;
 bool caps_lock = false;
 
 void tty_set_pos(int pos);
-extern int* tty_pos;
+extern uint32* tty_pos;
 
 void disable_input() {
   input_enabled = false;;

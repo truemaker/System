@@ -1,7 +1,7 @@
 int cursor_pos = 0;
 uint16* buffer = (uint16*) 0xB8000;
-uint8 fg_color = 0x0f;
-uint8 bg_color = 0x01;
+#define fg_color 0x0f
+#define bg_color 0x01
 uint8 last_char = 0x00;
 uint8 listen = 0x00;
 uint32 listen_start = 0x00;
@@ -10,7 +10,7 @@ uint8 show = 0x01;
 void tty_char(uint8 c);
 void tty_sync();
 void tty_next_line();
-int* tty_pos;
+uint32* tty_pos;
 uint16* tty_buffer;
 
 void disable_cursor()
