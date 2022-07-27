@@ -40,5 +40,6 @@ void start_desktop() {
             draw = 1;
             updated = 0;
         }
+        gSwap();
     }
 }

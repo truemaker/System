@@ -139,7 +139,6 @@ void init() {
     print_raw(tty_buffer);
     setup_user_mode();
     set_cursor_pos(0);
-    int i = 10/0;
     start_user_mode();
     
     // Fix my Error
