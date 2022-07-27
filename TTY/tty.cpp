@@ -1,4 +1,4 @@
-#include "../FS/tfs.cpp"
+//#include "../FS/tfs.cpp"
 /*
 uint16 tty0[2200];
 uint16 tty1[2200];

@@ -93,6 +93,7 @@ void kpanic(uint8* message, regs* r) {
     next_line();
 	next_line();
 	print_str((uint8*)"System Halted!");
+    //vga_update();
 loop:
     asm("nop");
     goto loop;

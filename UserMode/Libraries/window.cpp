@@ -33,11 +33,11 @@ void wPutPixel(gContext* context, uint16 x, uint16 y, uint8 color) {
 
 void wDrawLine(gContext* context, uint16 x1, uint16 y1, uint16 x2, uint16 y2, uint8 color) {
     if (x1 == x2) {
-        for (uint16 i = y1; i < y2; i++) {
+        for (uint16 i = y1; i <= y2; i++) {
             wPutPixel(context, x1, i, color);
         }
     } else if (y1 == y2) {
-        for (uint16 i = x1; i < x2; i++) {
+        for (uint16 i = x1; i <= x2; i++) {
             wPutPixel(context, i, y1, color);
         }
     }
@@ -79,9 +79,6 @@ void wDrawPanel(panel* panel, window* window) {
 }
 
 void wDraw(window* window) {
-    fill_rect(window->x + 1, window->y + 1, window->width, window->height, BLACK);
-    fill_rect(window->x, window->y + 1, window->width, window->height, BLACK);
-    fill_rect(window->x + 1, window->y, window->width, window->height, BLACK);
     fill_rect(window->x + 2, window->y + 2, window->width, window->height, BLACK);
     fill_rect(window->x, window->y, window->width, window->height, BRIGHT_BLUE);
     draw_rect(window->x, window->y, window->width, window->height, BLUE);

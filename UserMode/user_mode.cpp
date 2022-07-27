@@ -7,6 +7,8 @@ void user_ok() {
 // Libraries
 #include "Libraries/stdio.cpp"
 #include "Libraries/graphics.cpp"
+#include "Libraries/bitmap.h"
+#include "Libraries/bitmap.cpp"
 #include "Libraries/window.cpp"
 //#include "Libraries/GL.cpp"
 

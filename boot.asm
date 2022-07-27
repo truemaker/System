@@ -16,7 +16,7 @@ mov al, 0x3
 int 0x10                ; text mode
 
 mov ah, 0x02
-mov al, dh 
+mov al, dh
 mov ch, 0x00
 mov dh, 0x00
 mov cl, 0x02
@@ -29,6 +29,9 @@ CODE_SEG equ GDT_code - GDT_start
 DATA_SEG equ GDT_data - GDT_start
 
 cli
+
+
+
 lgdt [GDT_descriptor]
 mov eax, cr0
 or eax, 1
@@ -74,7 +77,7 @@ start_protected_mode:
 	mov fs, ax
 	mov gs, ax
 	
-	mov ebp, 0x90000		; 32 bit stack base pointer
+	mov ebp, 0x99999		; 32 bit stack base pointer
 	mov esp, ebp
 
     jmp KERNEL_LOCATION

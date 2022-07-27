@@ -1,5 +1,6 @@
 int timer_ticks = 0;
 int seconds = 0;
+char draw = 0;
 
 void kernel_loop();
 void vga_update();
@@ -18,8 +19,9 @@ void timer_handler(struct regs *r)
     timer_ticks++;
     kernel_loop();
     vga_update();
-    if (gInitialized == 1) {
+    if (gInitialized == 1 && draw==1) {
         gSwap();
+        draw = 0;
     }
 
     if (timer_ticks % 18 == 0)

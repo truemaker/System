@@ -4,7 +4,7 @@ void sys_0(regs* r) {
     kernel_exit();
 }
 void sys_1(regs* r) {
-    tfs_mkfile((uint8*)r->ebx, r->ecx);
+    //tfs_mkfile((uint8*)r->ebx, r->ecx);
 }
 void sys_2(regs* r) {
 }

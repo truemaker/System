@@ -113,6 +113,7 @@ void keyboard_handler(struct regs *r)
     		case 0xaa: shift_pressed = false; break;
 
     	}
+      kpressed[scancode - 0x80] = 0;
 
     }
     else
@@ -126,5 +127,6 @@ void keyboard_handler(struct regs *r)
     		case 0x3a: caps_lock = !caps_lock; break;
     		default: if (kbdus[scancode] != 0  && !(shift_pressed | caps_lock)) { input_char(kbdus[scancode], shift_pressed | caps_lock);} else if (kbdus_shift[scancode] != 0  && (shift_pressed | caps_lock)) input_char(kbdus_shift[scancode], shift_pressed | caps_lock);
     	}
+      kpressed[scancode] = 1;
     }
 }

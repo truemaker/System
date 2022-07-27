@@ -32,10 +32,12 @@ uint8 user_mode = 0x00;
 // Interaction
 #include "Interaction/ports.cpp"
 
+#include "UserMode/Libraries/input.cpp"
+
 // Drivers
 #include "Drivers/vga.cpp"
 #include "Drivers/keyboard.cpp"
-#include "Drivers/disk.cpp"
+//#include "Drivers/disk.cpp"
 
 // Fallback system
 #include "Fallback/kernel.cpp"
@@ -78,7 +80,7 @@ void hello() {
 void init() {
     cpuid(0x01, &eax, &ebx, &ecx, &edx);
     initializeMem();
-    init_dynamic_mem();
+    //init_dynamic_mem();
     //setup_devices();
     setup_tty();
     tty_set(0);
@@ -132,11 +134,17 @@ void init() {
     tty_color_out((char*)"[OK]\n", 0x0A, 0x00);
     tty_out((char*)"Welcome to MyOS\n");
     print_raw(tty_buffer);
+    
     tty_out((char*)"Starting Init");
     print_raw(tty_buffer);
     setup_user_mode();
     set_cursor_pos(0);
+    int i = 10/0;
     start_user_mode();
+    
+    // Fix my Error
+    /*asm("cli");
+    asm("hlt");*/
 }
 
 extern "C" void kernel_loop() {
